@@ -12,7 +12,7 @@ import java.util.concurrent.ScheduledExecutorService;
 public class RevisionControlStoreFactory implements FactoryBean<StoreFactory> {
     private final Logger LOGGER = Logger.getLogger(RevisionControlStoreFactory.class);
 
-    @Value("${revision.control:svn}")
+    @Value("${revision.control:git}")
     private String revisionControlType;
     private ScheduledExecutorService scheduledExecutorService;
 
