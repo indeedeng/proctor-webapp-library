@@ -68,6 +68,7 @@ public class GitProctorStoreFactory implements StoreFactory {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("createStore function in GitProctorStoreFactory - this should not be shown\n\n");
         return null;
     }
 
