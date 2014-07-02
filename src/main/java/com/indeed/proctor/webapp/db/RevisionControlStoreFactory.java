@@ -31,6 +31,7 @@ public class RevisionControlStoreFactory implements FactoryBean<StoreFactory> {
                                               svnRefreshMinutes, svnPath, svnUsername, svnPassword);
         } else if ("git".equals(revisionControlType)) {
             LOGGER.error("Git is not yet supported as a revision control type.");
+            //return new GitProctorStoreFactory(scheduledExecutorService, svnPath, svnUsername, svnPassword);
         }
         return null;
     }
