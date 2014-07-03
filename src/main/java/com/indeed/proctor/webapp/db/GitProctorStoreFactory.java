@@ -51,9 +51,10 @@ public class GitProctorStoreFactory implements StoreFactory {
     public ProctorStore createStore(final String relativePath) {
         final File tempDirectory = createTempDirectoryForPath(relativePath);
 
-        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(Strings.nullToEmpty(gitUrl)), "git.url property cannot be empty");
+        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(Strings.nullToEmpty(gitUrl)), "svn.path property cannot be empty");
         // TODO (parker) 9/13/12 - sanity check that path + relative path make a valid url
         final String fullPath = gitUrl + relativePath;
+        System.out.println("fullPath: " + fullPath);
 
         // final gitWorkspaceProviderImpl provider = new gitWorkspaceProviderImpl(tempDirectory, tempDirCleanupAgeMillis);
         // final gitPersisterCoreImpl gitcore = new gitPersisterCoreImpl(fullPath, gitUsername, gitPassword, provider, true /* shutdown provider */);
