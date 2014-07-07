@@ -87,7 +87,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping({"/definition", "/proctor/definition"})
 public class ProctorTestDefinitionController extends AbstractController {
     private static final Logger LOGGER = Logger.getLogger(ProctorTestDefinitionController.class);
-    private static final Revision UNKNOWN_VERSION = new Revision("-1", "[unknown]", new Date(0), "History unknown");
+    private static final Revision UNKNOWN_VERSION = new Revision("", "[unknown]", new Date(0), "History unknown");
 
     private static final Pattern ALPHA_NUMERIC_PATTERN = Pattern.compile("^[a-z0-9_]+$", Pattern.CASE_INSENSITIVE);
     private static final Pattern VALID_TEST_NAME_PATTERN = ALPHA_NUMERIC_PATTERN;
@@ -173,7 +173,7 @@ public class ProctorTestDefinitionController extends AbstractController {
     ) {
 
         final TestDefinition definition = new TestDefinition(
-            "-1" /* version *//* TODO jcheng changed to a string 7/3/14 */,
+            "" /* version */,
             null /* rule */,
             TestType.USER /* testType */,
             "" /* salt */,
@@ -194,14 +194,14 @@ public class ProctorTestDefinitionController extends AbstractController {
     public String show(
         @PathVariable final String testName,
         @RequestParam(required = false) final String branch,
-        @RequestParam(required = false, defaultValue = "-1", value = "r") final String revision,
+        @RequestParam(required = false, defaultValue = "", value = "r") final String revision,
         final Model model
     ) {
         final Environment theEnvironment = determineEnvironmentFromParameter(branch);
         final ProctorStore store = determineStoreFromEnvironment(theEnvironment);
 
         final TestDefinition definition;
-        if (Long.parseLong(revision) > 0) {
+        if (revision.length() > 0) {
             definition = getTestDefinition(store, testName, revision);
         } else {
             definition = getTestDefinition(store, testName);
@@ -222,7 +222,7 @@ public class ProctorTestDefinitionController extends AbstractController {
         @PathVariable String testName,
         final Model model
     ) {
-        final Environment theEnvironment = Environment.WORKING; // only allow editting of  TRUNK!
+        final Environment theEnvironment = Environment.WORKING; // only allow editing of TRUNK!
         final ProctorStore store = determineStoreFromEnvironment(theEnvironment);
 
         final TestDefinition definition = getTestDefinition(store, testName);
@@ -607,7 +607,7 @@ public class ProctorTestDefinitionController extends AbstractController {
         @RequestParam(required = false, defaultValue = "false") final boolean isCreate,
         @RequestParam(required = false) final String comment,
         @RequestParam(required = false) final String testDefinition, // testDefinition is JSON representation of test-definition
-        @RequestParam(required = false, defaultValue = "-1") final String previousRevision,
+        @RequestParam(required = false, defaultValue = "") final String previousRevision,
         final HttpServletRequest request,
         final Model model) {
 
@@ -663,12 +663,12 @@ public class ProctorTestDefinitionController extends AbstractController {
 
 
                     final Revision prevVersion;
-                    if (Long.parseLong(previousRevision) > 0) {
+                    if (previousRevision.length() > 0) {
                         log("(svn) getting svn history for '" + testName + "'");
                         final List<Revision> history = getTestHistory(store, testName, 1);
                         if (history.size() > 0) {
                             prevVersion = history.get(0);
-                            if (!prevVersion.getRevision().equals(previousRevision)) {
+                            if (! prevVersion.getRevision().equals(previousRevision)) {
                                 throw new IllegalArgumentException("Test has been updated since r" + previousRevision + " currently at r" + prevVersion.getRevision());
                             }
                         } else {
@@ -697,7 +697,7 @@ public class ProctorTestDefinitionController extends AbstractController {
                     log("(svn) loading existing test definition for '" + testName + "'");
                     // Getting the TestDefinition via currentTestMatrix instead of trunkStore.getTestDefinition because the test
                     final TestDefinition existingTestDefinition = trunkStore.getCurrentTestMatrix().getTestMatrixDefinition().getTests().get(testName);
-                    if (Long.parseLong(previousRevision) <= 0 && existingTestDefinition != null) {
+                    if (previousRevision.length() <= 0 && existingTestDefinition != null) {
                         throw new IllegalArgumentException("Current tests exists with name : '" + testName + "'");
                     }
 
@@ -829,8 +829,7 @@ public class ProctorTestDefinitionController extends AbstractController {
                                           final TestDefinition potential) {
         final TestMatrixVersion tmv = new TestMatrixVersion();
         tmv.setAuthor("author");
-        //tmv.setVersion(-1);
-        tmv.setVersion("-1"); // jcheng changed this 7/3/14
+        tmv.setVersion("");
         tmv.setDescription("fake matrix for validation of " + testName);
         tmv.setPublished(new Date());
 
