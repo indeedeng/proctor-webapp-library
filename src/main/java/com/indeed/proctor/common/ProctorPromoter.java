@@ -96,7 +96,8 @@ public class ProctorPromoter extends DataLoadingTimerTask {
     @SuppressWarnings({"MethodWithTooManyParameters"})
     private void promote(final String testName, final Environment srcBranch, final String srcRevision, final Environment destBranch, String destRevision,
                          String username, String password, Map<String, String> metadata) throws TestPromotionException, StoreException {
-        LOGGER.info(String.format("%s : Promoting %s from %s r%d to %s r%d", username, testName, srcBranch, srcRevision, destBranch, destRevision));
+        LOGGER.info(String.format("%s : Promoting %s from %s r%s to %s r%s", username, testName, srcBranch,
+                srcRevision, destBranch, destRevision));
         final ProctorStore src = getStoreFromBranch(srcBranch);
         final ProctorStore dest = getStoreFromBranch(destBranch);
         final boolean isSrcTrunk = Environment.WORKING == srcBranch;
