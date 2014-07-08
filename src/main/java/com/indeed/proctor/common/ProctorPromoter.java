@@ -135,11 +135,12 @@ public class ProctorPromoter extends DataLoadingTimerTask {
                 throw new TestPromotionException("No history found for '" + testName + "' in destination ( " + destBranch + ").");
             }
             final Revision destVersion = history.get(0);
-            if(destVersion.getRevision() != destRevision) {
+            if(!destVersion.getRevision().equals(destRevision)) {
                 throw new TestPromotionException("Test '" + testName + "' updated since " + destRevision + ". Currently at " + history.get(0).getRevision());
             }
             final String commitMessage = formatCommitMessage(testName , srcBranch, srcRevision, destBranch, srcVersion.getMessage());
-            LOGGER.info(String.format("%s : Committing %s from %s r%d to %s r%d", username, testName, srcBranch, srcRevision, destBranch, destRevision));
+            LOGGER.info(String.format("%s : Committing %s from %s r%s to %s r%s", username, testName, srcBranch,
+                    srcRevision, destBranch, destRevision));
             dest.updateTestDefinition(username, password, destRevision, testName, d, metadata, commitMessage);
         } else {
             final String commitMessage = formatCommitMessage(testName , srcBranch, srcRevision, destBranch, srcVersion.getMessage());
@@ -198,7 +199,7 @@ public class ProctorPromoter extends DataLoadingTimerTask {
 
 
         // Compute version as "trunk=@Version,qa=@Version,production=@Version"
-        final String version = String.format("trunk=%d,qa=%d,production=%d",
+        final String version = String.format("trunk=%s,qa=%s,production=%s",
                                              trunkMatrixVersion,
                                              qaMatrixVersion,
                                              prodMatrixVersion);
@@ -269,7 +270,7 @@ public class ProctorPromoter extends DataLoadingTimerTask {
         }
         final Matcher m = CHARM_MERGE_REVISION.matcher(branchRevision.getMessage());
         if(m.find()) {
-            final String trunkRevision = m.group(1).toString();
+            final String trunkRevision = m.group(1);
             return trunkRevision;
         }
         return branchDefinition.getVersion();

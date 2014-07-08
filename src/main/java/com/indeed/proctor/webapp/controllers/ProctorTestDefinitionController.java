@@ -444,7 +444,7 @@ public class ProctorTestDefinitionController extends AbstractController {
                         }
 
 
-                        log(String.format("Promoted %s from %s (r%d) to %s (r%d)", testName, source.getName(), srcRevision, destination.getName(), destRevision));
+                        log(String.format("Promoted %s from %s (r%s) to %s (r%s)", testName, source.getName(), srcRevision, destination.getName(), destRevision));
                         addUrl("/proctor/definition/" + UtilityFunctions.urlEncode(testName) + "?branch=" + destination.getName(), "view " + testName + " on " + destination.getName());
                     }
                 } catch (ProctorPromoter.TestPromotionException exp) {
