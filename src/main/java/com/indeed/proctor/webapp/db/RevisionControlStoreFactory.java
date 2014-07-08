@@ -26,12 +26,10 @@ public class RevisionControlStoreFactory implements FactoryBean<StoreFactory> {
 
     @Override
     public StoreFactory getObject() throws Exception {
-        LOGGER.error("TEST ERROR IN RevisionControlStoreFactory");
         if ("svn".equals(revisionControlType)) {
             return new SvnProctorStoreFactory(scheduledExecutorService, cache, tempDirCleanupAgeMinutes,
                                               svnRefreshMinutes, svnPath, svnUsername, svnPassword);
         } else if ("git".equals(revisionControlType)) {
-            LOGGER.error("Git is not yet supported as a revision control type.");
             return new GitProctorStoreFactory(scheduledExecutorService, svnPath, svnUsername, svnPassword);
         }
         return null;

@@ -37,33 +37,39 @@ public class GitProctorStoreFactory implements StoreFactory {
     }
 
     public ProctorStore getTrunkStore() {
-        return createStore("/trunk/matrices");
+//        return createStore("/trunk/matrices");
+        return createStore("trunk");
     }
 
     public ProctorStore getQaStore() {
-        return createStore("/branches/deploy/qa/matrices");
+//        return createStore("/branches/deploy/qa/matrices");
+        return createStore("qa");
     }
 
     public ProctorStore getProductionStore() {
-        return createStore("/branches/deploy/production/matrices");
+//        return createStore("/branches/deploy/production/matrices");
+        return createStore("production");
     }
     
-    public ProctorStore createStore(final String relativePath) {
-        final File tempDirectory = createTempDirectoryForPath(relativePath);
-
-        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(Strings.nullToEmpty(gitUrl)), "svn.path property cannot be empty");
-        // TODO (parker) 9/13/12 - sanity check that path + relative path make a valid url
-        final String fullPath = gitUrl + relativePath;
-        System.out.println("fullPath: " + fullPath);
-
-        // final gitWorkspaceProviderImpl provider = new gitWorkspaceProviderImpl(tempDirectory, tempDirCleanupAgeMillis);
-        // final gitPersisterCoreImpl gitcore = new gitPersisterCoreImpl(fullPath, gitUsername, gitPassword, provider, true /* shutdown provider */);
+    public ProctorStore createStore(final String branchName) {
+//
+//        final File tempDirectory = createTempDirectoryForPath(relativePath);
+//
+//        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(Strings.nullToEmpty(gitUrl)), "svn.path property cannot be empty");
+//        // TODO (parker) 9/13/12 - sanity check that path + relative path make a valid url
+//        final String fullPath = gitUrl + relativePath;
+//        System.out.println("fullPath: " + fullPath);
+//
+//        // final gitWorkspaceProviderImpl provider = new gitWorkspaceProviderImpl(tempDirectory, tempDirCleanupAgeMillis);
+//        // final gitPersisterCoreImpl gitcore = new gitPersisterCoreImpl(fullPath, gitUsername, gitPassword, provider, true /* shutdown provider */);
         
         try {
             final GitProctor store = new GitProctor(gitUrl, gitUsername, gitPassword);
+            store.checkoutBranch(branchName);
             final VarExporter exporter = VarExporter.forNamespace(GitProctor.class.getSimpleName()).includeInGlobal();
-            final String prefix = relativePath.substring(1).replace('/', '-');
-            exporter.export(store, prefix + "-");
+            //final String prefix = branchName.substring(1).replace('/', '-');
+            //exporter.export(store, prefix + "-");
+            exporter.export(store, branchName + "-");
 
             return store; //TODO FIX
         } catch (IOException e) {
@@ -72,10 +78,12 @@ public class GitProctorStoreFactory implements StoreFactory {
         System.out.println("createStore function in GitProctorStoreFactory - this should not be shown\n\n");
         return null;
     }
-
+/*
     private File createTempDirectoryForPath(final String relativePath) {
         // replace "/" with "-" omit first "/" but omitEmptyStrings
+        System.out.println(relativePath);
         final String dirName = CharMatcher.is(File.separatorChar).trimAndCollapseFrom(relativePath, '-');
+        System.out.println(dirName);
         final File parent = tempRoot != null ? tempRoot : implicitTempRoot;
         final File temp = new File(parent, dirName);
         if(temp.exists()) {
@@ -89,7 +97,7 @@ public class GitProctorStoreFactory implements StoreFactory {
         }
         return temp;
     }
-
+*/
     /**
      * Identify the root-directory for TempFiles
      * @return
