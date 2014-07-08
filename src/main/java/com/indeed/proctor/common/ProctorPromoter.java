@@ -32,7 +32,7 @@ public class ProctorPromoter extends DataLoadingTimerTask {
     final ProctorStore trunk;
     final ProctorStore qa;
     final ProctorStore production;
-    private volatile ConcurrentMap<String, EnvironmentVersion> environmentVersions;
+    private volatile ConcurrentMap<String, EnvironmentVersion>  environmentVersions;
 
     public ProctorPromoter(final ProctorStore trunk,
                            final ProctorStore qa,

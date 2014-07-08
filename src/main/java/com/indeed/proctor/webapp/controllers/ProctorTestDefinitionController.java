@@ -651,7 +651,7 @@ public class ProctorTestDefinitionController extends AbstractController {
 
             @Override
             public Boolean call() throws Exception {
-                final Environment theEnvironment = Environment.WORKING; // only allow editting of  TRUNK!
+                final Environment theEnvironment = Environment.WORKING; // only allow editing of TRUNK!
                 final ProctorStore store = determineStoreFromEnvironment(theEnvironment);
 
                 try {
