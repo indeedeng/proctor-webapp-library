@@ -118,7 +118,6 @@ public class ProctorPromoter extends DataLoadingTimerTask {
         // Update the Test Definition Version to the svn-revision of the source
         if(isSrcTrunk) {
             // If source is trunk, we want to set the version of the test-matrix to be the revision on trunk
-            // TODO (parker) 9/24/12 - make version long
             d.setVersion(srcRevision);
         }
 
