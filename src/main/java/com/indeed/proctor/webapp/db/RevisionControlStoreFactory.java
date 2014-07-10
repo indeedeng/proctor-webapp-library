@@ -19,18 +19,18 @@ public class RevisionControlStoreFactory implements FactoryBean<StoreFactory> {
     private boolean cache;
     private long tempDirCleanupAgeMinutes;
     private long svnRefreshMinutes;
-    private String svnPath;
-    private String svnUsername;
-    private String svnPassword;
+    private String scmPath;
+    private String scmUsername;
+    private String scmPassword;
 
 
     @Override
     public StoreFactory getObject() throws Exception {
         if ("svn".equals(revisionControlType)) {
             return new SvnProctorStoreFactory(scheduledExecutorService, cache, tempDirCleanupAgeMinutes,
-                                              svnRefreshMinutes, svnPath, svnUsername, svnPassword);
+                                              svnRefreshMinutes, scmPath, scmUsername, scmPassword);
         } else if ("git".equals(revisionControlType)) {
-            return new GitProctorStoreFactory(scheduledExecutorService, svnPath, svnUsername, svnPassword);
+            return new GitProctorStoreFactory(scheduledExecutorService, scmPath, scmUsername, scmPassword);
         }
         return null;
     }
@@ -76,18 +76,18 @@ public class RevisionControlStoreFactory implements FactoryBean<StoreFactory> {
         this.svnRefreshMinutes = svnRefreshMinutes;
     }
 
-    @Value("${svn.path}")
-    public void setSvnPath(final String svnPath) {
-        this.svnPath = svnPath;
+    @Value("${scm.path}")
+    public void setScmPath(final String scmPath) {
+        this.scmPath = scmPath;
     }
 
-    @Value("${svn.login}")
-    public void setSvnUsername(final String svnUsername) {
-        this.svnUsername = svnUsername;
+    @Value("${scm.login}")
+    public void setScmUsername(final String scmUsername) {
+        this.scmUsername = scmUsername;
     }
 
-    @Value("${svn.password}")
-    public void setSvnPassword(final String svnPassword) {
-        this.svnPassword = svnPassword;
+    @Value("${scm.password}")
+    public void setScmPassword(final String scmPassword) {
+        this.scmPassword = scmPassword;
     }
 }
