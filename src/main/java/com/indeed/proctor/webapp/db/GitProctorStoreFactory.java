@@ -55,7 +55,7 @@ public class GitProctorStoreFactory implements StoreFactory {
 //
 //        final File tempDirectory = createTempDirectoryForPath(relativePath);
 //
-//        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(Strings.nullToEmpty(gitUrl)), "svn.path property cannot be empty");
+        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(Strings.nullToEmpty(gitUrl)), "svn.path property cannot be empty");
 //        // TODO (parker) 9/13/12 - sanity check that path + relative path make a valid url
 //        final String fullPath = gitUrl + relativePath;
 //        System.out.println("fullPath: " + fullPath);
@@ -63,20 +63,14 @@ public class GitProctorStoreFactory implements StoreFactory {
 //        // final gitWorkspaceProviderImpl provider = new gitWorkspaceProviderImpl(tempDirectory, tempDirCleanupAgeMillis);
 //        // final gitPersisterCoreImpl gitcore = new gitPersisterCoreImpl(fullPath, gitUsername, gitPassword, provider, true /* shutdown provider */);
         
-        try {
-            final GitProctor store = new GitProctor(gitUrl, gitUsername, gitPassword);
-            store.checkoutBranch(branchName);
-            final VarExporter exporter = VarExporter.forNamespace(GitProctor.class.getSimpleName()).includeInGlobal();
-            //final String prefix = branchName.substring(1).replace('/', '-');
-            //exporter.export(store, prefix + "-");
-            exporter.export(store, branchName + "-");
+        final GitProctor store = new GitProctor(gitUrl, gitUsername, gitPassword);
+        store.checkoutBranch(branchName);
+        final VarExporter exporter = VarExporter.forNamespace(GitProctor.class.getSimpleName()).includeInGlobal();
+        //final String prefix = branchName.substring(1).replace('/', '-');
+        //exporter.export(store, prefix + "-");
+        exporter.export(store, branchName + "-");
 
-            return store; //TODO FIX
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("createStore function in GitProctorStoreFactory - this should not be shown\n\n");
-        return null;
+        return store;
     }
 /*
     private File createTempDirectoryForPath(final String relativePath) {
