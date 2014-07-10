@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class GitProctorStoreFactory implements StoreFactory {
     private static final Logger LOGGER = Logger.getLogger(GitProctorStoreFactory.class);
@@ -27,6 +28,9 @@ public class GitProctorStoreFactory implements StoreFactory {
     File tempRoot;
 
     private final File implicitTempRoot;
+
+    // The age (in milliseconds) to use when identifying temp directories that can be cleaned up
+    private long tempDirCleanupAgeMillis = TimeUnit.DAYS.toMillis(1);
 
     public GitProctorStoreFactory(final ScheduledExecutorService executor, final String gitUrl, final String gitUsername, final String gitPassword) throws IOException, ConfigurationException {
         this.executor = executor;
