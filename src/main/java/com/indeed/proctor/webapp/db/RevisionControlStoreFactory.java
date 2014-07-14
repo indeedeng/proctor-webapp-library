@@ -18,7 +18,7 @@ public class RevisionControlStoreFactory implements FactoryBean<StoreFactory> {
 
     private boolean cache;
     private long tempDirCleanupAgeMinutes;
-    private long svnRefreshMinutes;
+    private long scmRefreshMinutes;
     private String scmPath;
     private String scmUsername;
     private String scmPassword;
@@ -28,9 +28,9 @@ public class RevisionControlStoreFactory implements FactoryBean<StoreFactory> {
     public StoreFactory getObject() throws Exception {
         if ("svn".equals(revisionControlType)) {
             return new SvnProctorStoreFactory(scheduledExecutorService, cache, tempDirCleanupAgeMinutes,
-                                              svnRefreshMinutes, scmPath, scmUsername, scmPassword);
+                                              scmRefreshMinutes, scmPath, scmUsername, scmPassword);
         } else if ("git".equals(revisionControlType)) {
-            return new GitProctorStoreFactory(scheduledExecutorService, scmPath, scmUsername, scmPassword);
+            return new GitProctorStoreFactory(scheduledExecutorService, scmRefreshMinutes, scmPath, scmUsername, scmPassword);
         }
         return null;
     }
@@ -71,9 +71,9 @@ public class RevisionControlStoreFactory implements FactoryBean<StoreFactory> {
         this.tempDirCleanupAgeMinutes = tempDirCleanupAgeMinutes;
     }
 
-    @Value("${svn.refresh.period.minutes:5}")
-    public void setSvnRefreshMinutes(long svnRefreshMinutes) {
-        this.svnRefreshMinutes = svnRefreshMinutes;
+    @Value("${scm.refresh.period.minutes:5}")
+    public void setScmRefreshMinutes(long scmRefreshMinutes) {
+        this.scmRefreshMinutes = scmRefreshMinutes;
     }
 
     @Value("${scm.path}")
