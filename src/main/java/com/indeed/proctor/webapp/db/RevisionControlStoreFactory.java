@@ -45,6 +45,7 @@ public class RevisionControlStoreFactory implements FactoryBean<StoreFactory> {
         return true;
     }
 
+    @Value("${revision.control}")
     public void setRevisionControlType(String revisionControlType) {
         this.revisionControlType = revisionControlType;
     }
