@@ -1,4 +1,10 @@
-# Proctor
+# Proctor-webapp-library
+
+---
+
+**This repository is now archived, the contents have been moved to https://github.com/indeedeng/proctor**
+
+---
 
 Proctor-Webapp-Library is a library used for running a web application to create and modify [Proctor](https://github.com/indeedeng/proctor) definitions.
 
